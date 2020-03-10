@@ -17,14 +17,14 @@ chrome.browserAction.onClicked.addListener(function (tab)
     {
       chrome.browserAction.setIcon({path: "images/app-on.png"});
       chrome.tabs.sendMessage(tab.id, {text: 'addMaxResults'});
-      checkId = setInterval(() =>
-      {
-        chrome.tabs.sendMessage(tab.id, {text: 'addMaxResults'});
-      }, dbValue.key.checkInterval);
+    //   checkId = setInterval(() =>
+    //   {
+    //     chrome.tabs.sendMessage(tab.id, {text: 'addMaxResults'});
+    //   }, dbValue.key.checkInterval);
     } else
     {
       chrome.browserAction.setIcon({path: "images/app-off.png"});
-      clearInterval(checkId);
+    //   clearInterval(checkId);
       chrome.tabs.sendMessage(tab.id, {text: 'removeMaxResults'});
     }
   });
