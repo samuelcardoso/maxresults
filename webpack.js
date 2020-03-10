@@ -7,9 +7,9 @@ const config = {
   mode: "development",
   devtool: "cheap-module-source-map",
   entry: {
-    content: path.join(__dirname, "./browser/content.js"),
-    settings: path.join(__dirname, "./browser/settings.js"),
-    background: path.join(__dirname, "./browser/background.js")
+    content: path.join(__dirname, "./browser/triggerContent.js"),
+    settings: path.join(__dirname, "./browser/triggerSettings.js"),
+    background: path.join(__dirname, "./browser/triggerBackground.js")
   },
   output: {
     path: path.resolve(__dirname, "./build"),
@@ -45,7 +45,7 @@ const config = {
       }),
     new CopyPlugin([
       {
-        from: "images",
+        from: "app/images",
         to: "images"
       },
       {

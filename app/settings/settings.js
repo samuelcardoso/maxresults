@@ -1,11 +1,11 @@
 
 import React, { Component } from 'react'
-class Main extends React.Component {
+import './settings.css'
+export default class Settings extends React.Component {
   render() {
-    return <h1>Settings Hello World</h1>
+    return <h1>Settings 2 Hello World</h1>
   }
 }
-export default Main
 
 // var mainLinkPage = document.getElementById('mainLinkPage');
 // var iFrameXpath = document.getElementById('iFrameXpath');

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-class Main extends React.Component {
+import './content.css'
+export default class Content extends React.Component {
   render() {
     return <h1>Hello World</h1>
   }
 }
-export default Main
 
 // chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 
