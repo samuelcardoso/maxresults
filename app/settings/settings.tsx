@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import './settings.css'
 
-export default class Settings extends React.Component {
-  // result = evaluate("string(.//li[1])", Foo, null, XPathResult.STRING_TYPE);
-  render() {
-    return <h1>Settings 1</h1>
-  }
+export default function Settings() {
+  return <h1>Settings 1</h1>;
 }
+
 
 // var mainLinkPage = document.getElementById('mainLinkPage');
 // var iFrameXpath = document.getElementById('iFrameXpath');

@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import './content.css'
 
-export default class Content extends React.Component {
-  render() {
-    return <h1>Content 1</h1>
-  }
+export default function Content() {
+  useEffect(() => {
+    alert('loaded');
+  }, []);
+
+  return <h1>Content 1</h1>;
 }
 
 // chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
