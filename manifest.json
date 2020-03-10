@@ -1,0 +1,32 @@
+{
+  "manifest_version": 2,
+  "name": "MaxResults",
+  "version": "0.0.1",
+  "homepage_url": "http://www.maxresults.com",
+
+  "options_page": "settings/settings.html",
+
+  "browser_action": {
+    "default_icon": {
+      "32": "images/logo-32.png",
+      "128": "images/logo-128.png"
+    },
+    "default_title": "MaxResults Extension"
+  },
+
+  "background": {
+	  "scripts": ["background.js"],
+	  "persistent": false
+  },
+
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"]
+  }],
+
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ]
+}
