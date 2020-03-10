@@ -1,9 +1,11 @@
-
 import React, { Component } from 'react'
 import './settings.css'
+import { evaluate, XPathResult } from "xpath-react";
+
 export default class Settings extends React.Component {
+  // result = evaluate("string(.//li[1])", Foo, null, XPathResult.STRING_TYPE);
   render() {
-    return <h1>Settings 2 Hello World</h1>
+    return <h1>Settings 1</h1>
   }
 }
 

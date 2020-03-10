@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import './content.css'
+
 export default class Content extends React.Component {
+  // result = evaluate("string(.//li[1])", Foo, null, XPathResult.STRING_TYPE);
   render() {
-    return <h1>Hello World</h1>
+    return <h1>Content 1</h1>
   }
 }
 
