@@ -3,10 +3,9 @@ import { evaluate, XPathResult } from "xpath-react";
 class Background {
   static run() {
     chrome.webNavigation.onCompleted.addListener(function(details) {
-      debugger;
+      // const result = evaluate("string(//*[@id="rso"]/div/div/div[2]/div/div/div[1]/a/h3)", Foo, null, XPathResult.STRING_TYPE);
       chrome.tabs.executeScript(details.tabId, {
           code: `
-            const result = evaluate("string(//*[@id="rso"]/div/div/div[2]/div/div/div[1]/a/h3)", Foo, null, XPathResult.STRING_TYPE);
             alert(0);
           `
       });
