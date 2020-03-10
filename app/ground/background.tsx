@@ -1,14 +1,12 @@
-import { evaluate, XPathResult } from "xpath-react";
-
-class Background {
+export default class Background {
   static run() {
     chrome.webNavigation.onCompleted.addListener(function(details) {
       // const result = evaluate("string(//*[@id="rso"]/div/div/div[2]/div/div/div[1]/a/h3)", Foo, null, XPathResult.STRING_TYPE);
-      chrome.tabs.executeScript(details.tabId, {
-          code: `
-            alert(0);
-          `
-      });
+      // chrome.tabs.executeScript(details.tabId, {
+      //     code: `
+      //       alert(0);
+      //     `
+      // });
     }, {
       url: [{
           // Runs on example.com, example.net, but also example.foo.com
@@ -54,4 +52,3 @@ class Background {
 
   }
 }
-export default Background

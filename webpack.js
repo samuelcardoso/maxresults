@@ -7,9 +7,10 @@ const config = {
   mode: "development",
   devtool: "cheap-module-source-map",
   entry: {
-    content: path.join(__dirname, "./browser/triggerContent.tsx"),
-    settings: path.join(__dirname, "./browser/triggerSettings.tsx"),
-    background: path.join(__dirname, "./browser/triggerBackground.tsx")
+    content: path.join(__dirname, "./browser/content.tsx"),
+    settings: path.join(__dirname, "./browser/settings.tsx"),
+    background: path.join(__dirname, "./browser/_background.tsx"),
+    foreground: path.join(__dirname, "./browser/_foreground.tsx")
   },
   output: {
     path: path.resolve(__dirname, "./build"),
