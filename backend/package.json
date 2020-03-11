@@ -1,0 +1,67 @@
+{
+  "name": "maxsave",
+  "version": "1.0.0",
+  "description": "MaxSave",
+  "private": true,
+  "authors": [
+    "Fácil Informática"
+  ],
+  "repository": {
+    "type": "git"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "start": "NODE_ENV=dev ./node_modules/.bin/serverless offline -s seabra-hml",
+    "debug": "npm run-script build && NODE_ENV=dev DEBUG=* node --inspect ./node_modules/.bin/serverless offline --noTimeout -s seabra-hml",
+    "clean": "rimraf .build",
+    "lint": "eslint ./app/**/*.ts ./test/**/*.ts",
+    "format": "tsfmt -r",
+    "prepublish": "npm run build",
+    "pretest": "",
+    "test": "cross-env npm build && cross-env mocha --require ts-node/register test/tests.spec.ts --full-trace --timeout 1800000",
+    "test-debug": "cross-env npm build && NODE_ENV=dev DEBUG=* cross-env mocha --require ts-node/register test/tests.spec.ts --full-trace --timeout 1800000 --inspect",
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.417.0",
+    "aws-xray-sdk": "^2.4.0",
+    "class-transformer": "0.2.0",
+    "class-transformer-validator": "0.7.1",
+    "class-validator": "0.9.1",
+    "moment": "^2.24.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5",
+    "serverless-api-gateway-caching": "^1.3.8",
+    "typeorm": "^0.2.20"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.8",
+    "@types/mocha": "^7.0.1",
+    "@types/node": "^11.10.4",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "latest",
+    "cross-env": "latest",
+    "eslint": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "mocha": "^7.0.1",
+    "nsrun": "^1.4.1",
+    "nyc": "latest",
+    "rimraf": "latest",
+    "serverless": "^1.43.0",
+    "serverless-domain-manager": "3.2.7",
+    "serverless-offline": "^3.18.0",
+    "serverless-openapi-documentation": "^0.4.0",
+    "serverless-plugin-tracing": "^2.0.0",
+    "serverless-plugin-typescript": "^1.1.5",
+    "serverless-prune-plugin": "^1.4.1",
+    "sinon": "^7.2.4",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.5.3"
+  }
+}
