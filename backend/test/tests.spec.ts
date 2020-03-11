@@ -1,4 +1,4 @@
-import * as Retorno from './spec/export-bills';
+import * as Max from './spec/max';
 export default [
-    Retorno
+    Max
 ]

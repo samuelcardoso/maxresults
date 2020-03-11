@@ -30,26 +30,7 @@ provider:
       Resource:
         - "*"
   environment:
-    SERVICE_SOL_CONNECTION: ${file(./serverless.env.yml):${self:custom.stage}.SERVICE_SOL_CONNECTION}
-    AUTHORIZATION_SERVICE_SOL: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
     CUSTOM_DOMAIN: ${file(./serverless.env.yml):${self:custom.stage}.CUSTOM_DOMAIN}
-    BASE_BUCKET_REMITTANCE: ${file(./serverless.env.yml):${self:custom.stage}.BASE_BUCKET_REMITTANCE}
-    BUCKET_REMITTANCE: ${file(./serverless.env.yml):${self:custom.stage}.BUCKET_REMITTANCE}
-    AWS_SQS_TRANSACTION_QUEUE: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_TRANSACTION_QUEUE}
-    AWS_SQS_TRANSACTION_QUEUE_ARN: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_TRANSACTION_QUEUE_ARN}
-    AWS_SQS_ACCESS_KEY_ID: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_ACCESS_KEY_ID}
-    AWS_SQS_SECRET_ACCESS_KEY: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_SECRET_ACCESS_KEY}
-    AWS_SQS_REGION: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_REGION}
-    ZOOP_MARKETPLACE_ID: ${file(./serverless.env.yml):${self:custom.stage}.ZOOP_MARKETPLACE_ID}
-    ZOOP_SELLER_ID: ${file(./serverless.env.yml):${self:custom.stage}.ZOOP_SELLER_ID}
-    ZOOP_BASEPATH: ${file(./serverless.env.yml):${self:custom.stage}.ZOOP_BASEPATH}
-    ZOOP_APIKEY: ${file(./serverless.env.yml):${self:custom.stage}.ZOOP_APIKEY}
-    ZOOP_APISECRET: ${file(./serverless.env.yml):${self:custom.stage}.ZOOP_APISECRET}
-    AWS_S3_ACCESS_KEY_ID: ${file(./serverless.env.yml):${self:custom.stage}.AWS_S3_ACCESS_KEY_ID}
-    AWS_S3_SECRET_ACCESS_KEY: ${file(./serverless.env.yml):${self:custom.stage}.AWS_S3_SECRET_ACCESS_KEY}
-    AWS_S3_REGION: ${file(./serverless.env.yml):${self:custom.stage}.AWS_S3_REGION}
-    CLIENT: ${file(./serverless.env.yml):${self:custom.stage}.CLIENT}
-    DEFAULT_EMAIL_TEST: ${file(./serverless.env.yml):${self:custom.stage}.DEFAULT_EMAIL_TEST}
 
 custom:
   stage: ${opt:stage, 'dev'}
@@ -59,255 +40,26 @@ custom:
   apiGatewayCaching:
     enabled: false
     ttlInSeconds: 60
-  serverless-offline-sqs:
-    autoCreate: false
-    endpoint: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_TRANSACTION_QUEUE}
-    region: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_REGION}
-    accessKeyId: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_ACCESS_KEY_ID}
-    secretAccessKey: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_SECRET_ACCESS_KEY}
-    skipCacheInvalidation: false
   customDomain:
     domainName: ${file(./serverless.env.yml):${self:custom.stage}.CUSTOM_DOMAIN}
     stage: ${self:custom.stage}
     basePath: ""
-    certificateName: '*.servicesol.com.br'
+    certificateName: '*.maxmilhas.com.br'
     createRoute53Record: true
     endpointType: 'regional'
     securityPolicy: tls_1_2
 
 functions:
-# BILL TO RECEIVE
-  billToReceive_payViaCreditCard:
-    handler: src/endpoints.billToReceive_payViaCreditCard
-    timeout: 30
+  contract:
+    handler: src/endpoints.contract
     events:
       - http:
-          path: /bills_to_receive/pay-via-creditcard
-          method: POST
-          cors: true
-  billToReceive_processMessage:
-    handler: src/endpoints.billToReceive_processMessage
-    timeout: 120
-    events:
-      - sqs:
-          arn: ${file(./serverless.env.yml):${self:custom.stage}.AWS_SQS_TRANSACTION_QUEUE_ARN}
-          batchSize: 10
-      - http:
-          path: /bills_to_receive/process
-          method: POST
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_changeStatus:
-    handler: src/endpoints.billToReceive_changeStatus
-    events:
-      - http:
-          path: /bills_to_receive/status
-          method: POST
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_getStatus:
-    handler: src/endpoints.billToReceive_getStatus
-    events:
-      - http:
-          path: /bills_to_receive/status/{id}
+          path: /contract/{id}
           method: GET
           cors: true
           # caching:
           #   enabled: true
           #   cacheKeyParameters:
           #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_getLinkBoleto:
-    handler: src/endpoints.billToReceive_getLinkBoleto
-    events:
-      - http:
-          path: /bills_to_receive/{id}/linkboleto/
-          method: GET
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_getLastTransaction:
-    handler: src/endpoints.billToReceive_getLastTransaction
-    events:
-      - http:
-          path: /bills_to_receive/{id}/lasttransaction/
-          method: GET
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_alertPayment:
-    handler: src/endpoints.billToReceive_alertPaymentBoleto
-    events:
-      - http:
-          path: /bills_to_receive/alertpayment/{id}
-          method: GET
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_generateBoleto:
-    handler: src/endpoints.billToReceive_generateBoleto
-    events:
-      - http:
-          path: /bills_to_receive/boleto/
-          method: POST
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_all:
-    handler: src/endpoints.billToReceive_all
-    events:
-      - http:
-          path: /bills_to_receive/
-          method: GET
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_export:
-    handler: src/endpoints.billToReceive_export
-    events:
-      - http:
-          path: /bills_to_receive/export
-          method: POST
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_print:
-    handler: src/endpoints.billToReceive_print
-    events:
-      - http:
-          path: /bills_to_receive/print
-          method: POST
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_generateCredit:
-    handler: src/endpoints.billToReceive_generateCredit
-    events:
-      - http:
-          path: /bills_to_receive/credit
-          method: POST
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_getById:
-    handler: src/endpoints.billToReceive_getById
-    events:
-      - http:
-          path: /bills_to_receive/{id}
-          method: GET
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  billToReceive_installments:
-    handler: src/endpoints.billToReceive_getInstallmentsByValue
-    events:
-      - http:
-          path: /bills_to_receive/installments
-          method: GET
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-# REMESSA
-  remittance_all:
-    handler: src/endpoints.remittance_all
-    events:
-      - http:
-          path: /remittances
-          method: GET
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  remittance_get:
-    handler: src/endpoints.remittance_get
-    events:
-      - http:
-          path: /remittances/{id}
-          method: GET
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  remittance_create:
-    handler: src/endpoints.remittance_create
-    events:
-      - http:
-          path: /remittances
-          method: POST
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
-  remittance_generateBoletos:
-    handler: src/endpoints.remittance_generateBoletos
-    events:
-      - http:
-          path: /remittances/boletos
-          method: POST
-          cors: true
-          # caching:
-          #   enabled: true
-          #   cacheKeyParameters:
-          #     - name: request.querystring.cachetick
-          authorizer:
-            arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
+          # authorizer:
+          #   arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}

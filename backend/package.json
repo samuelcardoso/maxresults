@@ -4,15 +4,15 @@
   "description": "MaxSave",
   "private": true,
   "authors": [
-    "Fácil Informática"
+    "Samuel"
   ],
   "repository": {
     "type": "git"
   },
   "scripts": {
     "build": "npm run clean && tsc",
-    "start": "NODE_ENV=dev ./node_modules/.bin/serverless offline -s seabra-hml",
-    "debug": "npm run-script build && NODE_ENV=dev DEBUG=* node --inspect ./node_modules/.bin/serverless offline --noTimeout -s seabra-hml",
+    "start": "NODE_ENV=dev ./node_modules/.bin/serverless offline -s hml",
+    "debug": "npm run-script build && NODE_ENV=dev DEBUG=* node --inspect ./node_modules/.bin/serverless offline --noTimeout -s hml",
     "clean": "rimraf .build",
     "lint": "eslint ./app/**/*.ts ./test/**/*.ts",
     "format": "tsfmt -r",

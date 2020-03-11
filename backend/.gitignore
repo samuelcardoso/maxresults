@@ -15,4 +15,3 @@ coverage
 logs/*
 files/*
 test/log
-serverless.env.yml
