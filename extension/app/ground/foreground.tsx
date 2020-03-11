@@ -1,10 +1,5 @@
 import DomUtils from "../utils/dom.utils";
 
-const API_DATA = {
-  SEARCH_FLIGHTS_API: 'https://bff-site.maxmilhas.com.br/search',
-  TOKEN: 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtYXhtaWxoYXMuY29tLmJyIiwiaWF0IjoxNTE1MDkwNzA0LCJhdWQiOiJtYXhtaWxoYXMuY29tLmJyIiwic3ViIjoid3d3MiIsImVudiI6InByZCJ9.fkHem_jbevJJTOJUYAsd8OEULuJEvnbg2EN4XYmS75c'
-};
-
 export default class Foreground {
   static async run() {
     if(window.location.href.indexOf(
@@ -41,9 +36,28 @@ export default class Foreground {
           infants: 0 //bebês
         }
 
-        const flightsValues = await this.postSearchIntention(postData);
-        console.debug(flightsValues);
-        debugger;
+        // const port = await chrome.runtime.connect({name: "maxmilhas"});
+        const port = chrome.runtime.connect(null, {name: 'maxmilhas'});      
+        port.onDisconnect.addListener(obj => {
+          console.log('disconnected port');
+        })
+        port.postMessage({msg: {
+          type: 'search-intention',
+          data: postData
+        }});
+        port.onMessage.addListener((msg) => {
+          console.debug(msg);
+          alert('X');
+          debugger;
+        });
+        // const bgPage = chrome.extension.getBackgroundPage() as any;
+        // console.debug(bgPage);
+        // debugger;
+        // const response = await bgPage.postSearchIntention(postData);
+        // console.debug(response);
+
+        // const flightsValues = await this.postSearchIntention(postData);
+        // console.debug(flightsValues);
         // flight number: data-fp="CNFGIG0G32185"
         // horario: gws-flights-results__times-row
         // price: gws-flights-results__itinerary-price
@@ -53,77 +67,5 @@ export default class Foreground {
     //   console.debug(event);
     //   debugger;
     // }, false);
-  }
-
-  static async postSearchIntention(
-    {
-      tripType,
-      from,
-      to,
-      outboundDate,
-      inboundDate,
-      cabin,
-      adults,
-      children,
-      infants
-  }) {
-    return fetch(`${API_DATA.SEARCH_FLIGHTS_API}?time=1583891717316`,
-      {
-        method: 'POST',
-        body:    JSON.stringify({
-          tripType: tripType,
-          from: from,
-          to: to,
-          outboundDate: outboundDate,
-          inboundDate: inboundDate,
-          cabin: cabin,
-          adults: adults,
-          children: children,
-          infants: infants
-        }),
-        headers: { 
-          'Authorization': API_DATA.TOKEN,
-          'Content-Type': 'application/json;charset=UTF-8'
-        },
-    })
-    .then(res => {
-      console.debug(res);
-      debugger;
-      return res.json()
-    })
-    .then(json => {
-      console.debug(json);
-      debugger;
-      console.log(json)
-    }).catch(err => {
-      console.debug(err);
-      debugger;
-    });
-  }
-
-  static async searchFlights(
-    searchId: string,
-    airline: string
-  ) {
-    return fetch(`${API_DATA.SEARCH_FLIGHTS_API}/search/${searchId}/flights?airline=${airline}`,
-      {
-        method: 'GET',
-        headers: { 
-          'Authorization': API_DATA.TOKEN
-        },
-    })
-    .then(res => {
-      console.debug(res);
-      debugger;
-      return res.json()
-    })
-    .then(json => {
-      console.debug(json);
-      debugger;
-      console.log(json)
-    }).catch(err => {
-      console.debug(err);
-      debugger;
-    });
   }
 }

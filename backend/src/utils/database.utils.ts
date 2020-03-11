@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
-import { BillToReceive, Contract, Contractor, Provider, Remittance, Transaction } from 'servicesol.entities';
 
 export class Database {
   public static async getConnection(connectionManager): Promise<Connection> {
@@ -27,12 +26,6 @@ export class Database {
         entities: [
           // __dirname + '/../types/*.type.ts'
           // __dirname + '../types/*{.type.ts}'
-          BillToReceive,
-          Contract,
-          Contractor,
-          Provider,
-          Remittance,
-          Transaction
         ]
       };
 

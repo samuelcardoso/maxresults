@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Backend",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}/backend",
+      "runtimeExecutable": "npm",
+      "timeout": 30000,
+      "runtimeArgs": [
+        "run-script",
+        "debug"
+      ],
+      "port": 9229
+    },
+    {
+      "name": "Debug Tests",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}/backend",
+      "runtimeExecutable": "npm",
+      "timeout": 30000,
+      "runtimeArgs": [
+        "run-script",
+        "test-debug"
+      ],
+      "port": 9229
+    }
+  ]
+}

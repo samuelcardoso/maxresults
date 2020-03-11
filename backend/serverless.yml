@@ -50,11 +50,24 @@ custom:
     securityPolicy: tls_1_2
 
 functions:
-  contract:
-    handler: src/endpoints.contract
+  maxmilhas_postSearchIntention:
+    handler: src/endpoints.maxmilhas_postSearchIntention
     events:
       - http:
-          path: /contract/{id}
+          path: /maxmilhas/search
+          method: POST
+          cors: true
+          # caching:
+          #   enabled: true
+          #   cacheKeyParameters:
+          #     - name: request.querystring.cachetick
+          # authorizer:
+          #   arn: ${file(./serverless.env.yml):${self:custom.stage}.AUTHORIZATION_SERVICE_SOL}
+  maxmilhas_searchFlights:
+    handler: src/endpoints.maxmilhas_searchFlights
+    events:
+      - http:
+          path: /maxmilhas/search/{searchId}/flights
           method: GET
           cors: true
           # caching:
