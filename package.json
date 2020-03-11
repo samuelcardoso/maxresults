@@ -29,12 +29,13 @@
   },
   "dependencies": {
     "@types/chrome": "0.0.99",
+    "@types/node": "^13.9.0",
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3",
-    "xpath-react": "^6.1.0"
+    "wait-for-element": "^1.0.2"
   }
 }
